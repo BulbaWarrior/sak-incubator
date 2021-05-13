@@ -1,3 +1,11 @@
+data "http" "crd" {
+  url = "https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/crds.yaml"
+}
+
+resource "kubectl_manifest" "crd" {
+  yaml_body = data.http.crd.body
+}
+
 resource "kubernetes_namespace" "flux" {
   count = var.create_namespace ? 1 : 0
   metadata {
@@ -6,7 +14,7 @@ resource "kubernetes_namespace" "flux" {
 }
 
 resource "helm_release" "flux" {
-  depends_on = [kubernetes_namespace.flux]
+  depends_on = [kubernetes_namespace.flux, kubectl_manifest.crd]
   name       = "flux"
   repository = "https://charts.fluxcd.io"
   chart      = "flux"
@@ -20,7 +28,7 @@ resource "helm_release" "flux" {
 }
 
 resource "helm_release" "helm-operator" {
-  depends_on = [kubernetes_namespace.flux]
+  depends_on = [kubernetes_namespace.flux, kubectl_manifest.crd]
   name       = "helm-operator"
   repository = "https://charts.fluxcd.io"
   chart      = "helm-operator"
