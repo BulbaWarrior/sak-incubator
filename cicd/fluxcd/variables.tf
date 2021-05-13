@@ -4,8 +4,8 @@ variable "namespace" {
   description = "name of the namespace to install flux to"
 }
 
-variable "create_namespace" {
+variable "provision_namespace" {
   default     = true
   type        = bool
-  description = "whether or not the specified namespace should be created"
+  description = "If true terraform will provision a namespace with specified name. Set to false when you want to deploy flux into an existing namespace"
 }

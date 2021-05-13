@@ -7,7 +7,7 @@ resource "kubectl_manifest" "crd" {
 }
 
 resource "kubernetes_namespace" "flux" {
-  count = var.create_namespace ? 1 : 0
+  count = var.provision_namespace ? 1 : 0
   metadata {
     name = var.namespace
   }
