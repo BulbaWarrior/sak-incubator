@@ -22,7 +22,13 @@ resource "helm_release" "flux" {
 
   set {
     name  = "git.url"
-    value = "git@github.com:BulbaWarrior/flux-get-started"
+    value = var.git_url
+    type  = "string"
+  }
+
+  set {
+    name  = "git.branch"
+    value = var.git_branch
     type  = "string"
   }
 }
